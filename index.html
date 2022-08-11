@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+</head>
+<body>
+
+    <script>
+        var SceneA = new Phaser.Class({
+        Extends: Phaser.Scene,
+        initialize:
+            function SceneA (){
+                Phaser.Scene.call(this, { key: 'sceneA' });
+            },
+
+            preload: function (){
+                this.load.image('bgTitle', 'img/bg0.jpg');
+                this.load.image('heroRed', 'img/dipRed.png');
+                this.load.image('heroYellow', 'img/dipYellow.png');
+                this.load.image('heroViolet', 'img/dipViolet.png');
+                this.load.image('instr1', 'img/instr1.png');
+                this.load.image('instr2', 'img/instr2.png');
+                this.load.image('instr3', 'img/instr3.png');
+                this.load.image('logo', 'img/logo.png');
+                this.load.image('timerScorer', 'img/timer-scorer.png');
+            },
+
+            create: function (){
+                var bg0 = this.add.sprite(0, -50, 'bgTitle').setScale(.93);
+                bg0.setOrigin(0, 0);
+                var heroRed = this.add.sprite(530,650,'heroRed').setScale(.85).setInteractive().setOrigin(0,0);
+                var heroYellow = this.add.sprite(70,700,'heroYellow').setScale(.85).setInteractive().setOrigin(0,0);
+                var heroViolet = this.add.sprite(1065,700,'heroViolet').setScale(.85).setInteractive().setOrigin(0,0);
+                var instr1 = this.add.sprite(170,70,'instr1').setScale(.9).setOrigin(0,0);
+                var instr2 = this.add.sprite(170,70,'instr2').setScale(.9).setOrigin(0,0);
+                var instr3 = this.add.sprite(170,70,'instr3').setScale(.9).setOrigin(0,0);
+                var logo = this.add.sprite(1600,890,'logo').setScale(.9).setOrigin(0,0);
+                var timerScorer = this.add.sprite(1500,60,'timerScorer').setScale(.9).setOrigin(0,0);
+                // startButton = scene.add.text(this.sys.game.config.width, this.sys.game.config.height, 'Start game', textStyle)
+                // .setOrigin(0.5)
+                // .setPadding(10)
+                // .setStyle({ backgroundColor: '#111' })
+                // .setInteractive({ useHandCursor: true })
+                // .on('pointerdown', startGame)
+                // .on('pointerover', () => startButton.setStyle({ fill: '#f39c12' }))
+                // .on('pointerout', () => startButton.setStyle({ fill: '#FFF' }))
+
+                heroRed.on('pointerover',function(pointer){
+                    heroRed.setStyle({ backgroundColor: '#f39c12' })
+                })
+
+                heroRed.on('pointerout',function(pointer){
+                    heroRed.setStyle({ backgroundColor: '#f39c12' });
+                })
+                // var text = this.add.text(this.sys.game.config.width/2, this.sys.game.config.height/2, 'Welcome To My Game!', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
+                // text.setInteractive({ useHandCursor: true });
+                // this.text.once('pointerdown', function (event) {
+                //    this.scene.start('sceneB');
+                // }, this);
+
+                this.input.once('pointerdown', function (event) {
+                    this.scene.start('sceneB');
+                }, this);
+            }
+        });
+
+
+
+
+        var SceneB = new Phaser.Class({
+        Extends: Phaser.Scene,
+        initialize:
+        function SceneB (){
+            Phaser.Scene.call(this, { key: 'sceneB' });
+        },
+        preload: function ()
+        {
+            this.load.image('bgGame', 'img/bg1.jpg');
+            this.load.image('motionPath', 'img/motionPath.png');
+            this.load.image('heroRed', 'img/dipRed.png');
+            this.load.image('logo', 'img/logo.png');
+            this.load.image('timerScorer', 'img/timer-scorer.png');
+        },
+        create: function ()
+        {
+            var bg1 = this.add.sprite(-70, -80, 'bgGame').setOrigin(0, 0);
+            var motionPath = this.add.sprite(130,870,'motionPath').setScale(.9).setOrigin(0,0);
+            var hero = this.add.sprite(495,680,'heroRed').setScale(.9).setOrigin(0,0);
+            var logo = this.add.sprite(1600,890,'logo').setScale(.9).setOrigin(0,0);
+            var timerScorer = this.add.sprite(1500,60,'timerScorer').setScale(.9).setOrigin(0,0);
+            
+            // this.matter.world.setBounds(0, 0, 800, 600, 32, true, true, false, true);
+            // for (var i = 0; i < 64; i++)
+            // {
+            //     var ball = this.matter.add.image(Phaser.Math.Between(100, 700), Phaser.Math.Between(-600, 0), 'ball2');
+            //     ball.setCircle();
+            //     ball.setFriction(0.005);
+            //     ball.setBounce(1);
+            // }
+
+            this.input.once('pointerdown', function (event) {
+                this.scene.start('sceneC');
+            }, this);
+        }
+        });
+
+
+        
+
+        var SceneC = new Phaser.Class({
+        Extends: Phaser.Scene,
+        initialize:
+            function SceneC (){
+                Phaser.Scene.call(this, { key: 'sceneC' });
+            },
+            preload: function (){
+                this.load.image('bgGame', 'img/bg1.jpg');
+                this.load.image('motionPath', 'img/motionPath.png');
+                this.load.image('heroRed', 'img/dipRed.png');
+                this.load.image('logo', 'img/logo.png');
+                this.load.image('timerScorer', 'img/timer-scorer.png');
+                this.load.image('overlay', 'img/overlay.png');
+                this.load.image('final', 'img/final.png')
+                this.load.image('btnKeep', 'img/btnKeep.png')
+                this.load.image('btnCta', 'img/btnCta.png')
+            },
+            create: function (){
+                var bg1 = this.add.sprite(-70, -80, 'bgGame').setOrigin(0, 0);
+                var motionPath = this.add.sprite(130,870,'motionPath').setScale(.9).setOrigin(0,0);
+                var hero = this.add.sprite(495,680,'heroRed').setScale(.9).setOrigin(0,0);
+                var logo = this.add.sprite(1600,890,'logo').setScale(.9).setOrigin(0,0);
+                var timerScorer = this.add.sprite(1500,60,'timerScorer').setScale(.9).setOrigin(0,0);
+                var overlay = this.add.sprite(-70, -80, 'overlay').setOrigin(0, 0);
+                var final = this.add.sprite(this.sys.game.config.width/2, this.sys.game.config.height/2, 'final').setScale(.85).setOrigin(.5, .5);
+                var btnKeep = this.add.sprite((this.sys.game.config.width/2-220), (this.sys.game.config.height/2+270), 'btnKeep').setScale(.85).setOrigin(.5, .5);
+                var btnCta = this.add.sprite((this.sys.game.config.width/2+220), (this.sys.game.config.height/2+270), 'btnCta').setScale(.85).setOrigin(.5, .5);
+
+                this.input.once('pointerdown', function (event) {
+                this.scene.start('sceneA');
+            }, this);
+            }
+        });
+
+        var config = {
+        type: Phaser.AUTO,
+        width: 1920,
+        height: 1080,
+        backgroundColor: '#1f0120',
+        parent: 'phaser-example',
+        scene: [  SceneA, SceneB, SceneC ],
+        physics: { default: 'matter'},};
+
+        var game = new Phaser.Game(config);
+    </script>
+
+</body>
+</html>
