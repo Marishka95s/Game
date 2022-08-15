@@ -3,6 +3,7 @@
 <head>
     <title>Hood Milk Game</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.4/gsap.min.js"></script>
 </head>
 <body>
 
@@ -13,7 +14,16 @@
             function SceneA (){
                 Phaser.Scene.call(this, { key: 'sceneA' });
             },
-
+            init: function (){
+                // game variables
+                this.score = 0;
+                this.time = 20;
+                this.speed= 1.5;
+                this.heroe = ''
+                this.heroe_move = 1;
+                this.score_text;
+                this.time_text;
+            },
             preload: function (){
                 this.load.image('bgTitle', 'img/bg0.jpg');
                 this.load.image('heroRed', 'img/dipRed.png');
@@ -37,6 +47,10 @@
                 var instr3 = this.add.sprite(170,70,'instr3').setScale(.9).setOrigin(0,0);
                 var logo = this.add.sprite(1600,890,'logo').setScale(.9).setOrigin(0,0);
                 var timerScorer = this.add.sprite(1500,60,'timerScorer').setScale(.9).setOrigin(0,0);
+
+                this.scoreText = this.add.text(1640, 510, this.score, { fontSize: '120px', fill: 'red', fontFamily: 'Lucida Console, Courier, monospace'});
+                this.timeText = this.add.text(1535, 190, '0:' + this.time, {fontSize: '120px', fill: 'red', fontFamily: 'Lucida Console, Courier, monospace'});
+
                 // startButton = scene.add.text(this.sys.game.config.width, this.sys.game.config.height, 'Start game', textStyle)
                 // .setOrigin(0.5)
                 // .setPadding(10)
@@ -46,23 +60,59 @@
                 // .on('pointerover', () => startButton.setStyle({ fill: '#f39c12' }))
                 // .on('pointerout', () => startButton.setStyle({ fill: '#FFF' }))
 
-                heroRed.on('pointerover',function(pointer){
-                    heroRed.setStyle({ backgroundColor: '#f39c12' })
-                })
+                // heroes = [heroRed, heroViolet, heroYellow]
+                // console.log(heroes[0]) // sprite with el
 
-                heroRed.on('pointerout',function(pointer){
-                    heroRed.setStyle({ backgroundColor: '#f39c12' });
-                })
+               
+                    heroRed.on('pointerdown', function (pointer) {
+                        
+                        this.heroe = 'heroRed'
+                        console.log(this.heroe)
+                        //console.log(hero.texture.key)
+                        this.setTint(0xff0000);
+                        game.scene.start('sceneB', { heroe: this.heroe, score: this.score, time: this.time });
+                    });
+                    heroYellow.on('pointerdown', function (pointer) {
+                        
+                        this.heroe = 'heroYellow'
+                        console.log(this.heroe)
+                        //console.log(hero.texture.key)
+                        this.setTint(0xff0000);
+                        game.scene.start('sceneB', { heroe: this.heroe, score: this.score, time: this.time });
+                    });
+
+                    heroViolet.on('pointerdown', function (pointer) {
+                        this.heroe = 'heroViolet'
+                        console.log(this.heroe)
+                        //console.log(hero.texture.key)
+                        this.setTint(0xff0000);
+                        game.scene.start('sceneB', { heroe: this.heroe, score: this.score, time: this.time });
+                    });
+
+                    
+                    // hero.on('pointerout', function (pointer) {
+                    //     this.clearTint();
+                    // });
+
+                    // hero.on('pointerup', function (pointer) {
+                    //     this.heroe = ''
+                    //     this.clearTint();
+                    //     console.log(this.heroe)
+                    // });
+               
                 // var text = this.add.text(this.sys.game.config.width/2, this.sys.game.config.height/2, 'Welcome To My Game!', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
                 // text.setInteractive({ useHandCursor: true });
                 // this.text.once('pointerdown', function (event) {
                 //    this.scene.start('sceneB');
                 // }, this);
 
-                this.input.once('pointerdown', function (event) {
-                    this.scene.start('sceneB');
-                }, this);
-            }
+                // this.input.once('pointerdown', function (event) {
+                //     this.scene.start('sceneB', { heroe: this.heroe, score: this.score, time: this.time });
+                // }, this);
+            },
+            update: function (){
+                
+            },
         });
 
 
@@ -74,11 +124,23 @@
         function SceneB (){
             Phaser.Scene.call(this, { key: 'sceneB' });
         },
+        init: function (data){
+            // game variables
+            this.score = data.score;
+            this.time = data.time;
+            this.speed = 1.5;
+            this.heroe = data.heroe
+            this.heroe_move = 1;
+            this.score_text;
+            this.time_text;
+        },
         preload: function ()
         {
             this.load.image('bgGame', 'img/bg1.jpg');
             this.load.image('motionPath', 'img/motionPath.png');
             this.load.image('heroRed', 'img/dipRed.png');
+            this.load.image('heroYellow', 'img/dipYellow.png');
+            this.load.image('heroViolet', 'img/dipViolet.png');
             this.load.image('logo', 'img/logo.png');
             this.load.image('timerScorer', 'img/timer-scorer.png');
         },
@@ -86,9 +148,16 @@
         {
             var bg1 = this.add.sprite(-70, -80, 'bgGame').setOrigin(0, 0);
             var motionPath = this.add.sprite(130,870,'motionPath').setScale(.9).setOrigin(0,0);
-            var hero = this.add.sprite(495,680,'heroRed').setScale(.9).setOrigin(0,0);
+            var hero = this.add.sprite(495,680, `${this.heroe}`).setScale(.9).setOrigin(0,0);
+            if (this.heroe !== 'heroRed') {
+                hero.setScale(1.1)
+            }
             var logo = this.add.sprite(1600,890,'logo').setScale(.9).setOrigin(0,0);
             var timerScorer = this.add.sprite(1500,60,'timerScorer').setScale(.9).setOrigin(0,0);
+
+            this.scoreText = this.add.text(1640, 510, this.score, { fontSize: '120px', fill: 'red', fontFamily: 'Lucida Console, Courier, monospace'});
+            this.timeText = this.add.text(1535, 190, '0:' + this.time, {fontSize: '120px', fill: 'red', fontFamily: 'Lucida Console, Courier, monospace'});
+            console.log(this.time)
             
             // this.matter.world.setBounds(0, 0, 800, 600, 32, true, true, false, true);
             // for (var i = 0; i < 64; i++)
@@ -99,13 +168,17 @@
             //     ball.setBounce(1);
             // }
 
+            console.log(this.heroe)
             this.input.once('pointerdown', function (event) {
-                this.scene.start('sceneC');
+                this.scene.start('sceneC', { heroe: this.heroe, score: this.score, time: this.time });
             }, this);
-        }
+        }, 
+        update: function ()
+        {
+            //this.timeText = '0:' + `${this.time+1}`;
+            //console.log(this.timeText)
+        },
         });
-
-
         
 
         var SceneC = new Phaser.Class({
@@ -113,6 +186,16 @@
         initialize:
             function SceneC (){
                 Phaser.Scene.call(this, { key: 'sceneC' });
+            },
+            init: function (data){
+                // game variables
+                this.score = data.score;
+                this.time = data.time;
+                this.speed= 1.5;
+                this.heroe = data.heroe
+                this.heroe_move = 1;
+                this.score_text;
+                this.time_text;
             },
             preload: function (){
                 this.load.image('bgGame', 'img/bg1.jpg');
@@ -131,6 +214,10 @@
                 var hero = this.add.sprite(495,680,'heroRed').setScale(.9).setOrigin(0,0);
                 var logo = this.add.sprite(1600,890,'logo').setScale(.9).setOrigin(0,0);
                 var timerScorer = this.add.sprite(1500,60,'timerScorer').setScale(.9).setOrigin(0,0);
+
+                this.scoreText = this.add.text(1640, 510, this.score, { fontSize: '120px', fill: 'red', fontFamily: 'Lucida Console, Courier, monospace'});
+                this.timeText = this.add.text(1535, 190, '0:' + this.time, {fontSize: '120px', fill: 'red', fontFamily: 'Lucida Console, Courier, monospace'});
+
                 var overlay = this.add.sprite(-70, -80, 'overlay').setOrigin(0, 0);
                 var final = this.add.sprite(this.sys.game.config.width/2, this.sys.game.config.height/2, 'final').setScale(.85).setOrigin(.5, .5);
                 var btnKeep = this.add.sprite((this.sys.game.config.width/2-220), (this.sys.game.config.height/2+270), 'btnKeep').setScale(.85).setOrigin(.5, .5);
@@ -143,13 +230,14 @@
         });
 
         var config = {
-        type: Phaser.AUTO,
-        width: 1920,
-        height: 1080,
-        backgroundColor: '#1f0120',
-        parent: 'phaser-example',
-        scene: [  SceneA, SceneB, SceneC ],
-        physics: { default: 'matter'},};
+            type: Phaser.AUTO,
+            width: 1920,
+            height: 1080,
+            backgroundColor: '#000',
+            parent: 'phaser-example',
+            scene: [  SceneA, SceneB, SceneC ],
+            physics: { default: 'matter'},
+        };
 
         var game = new Phaser.Game(config);
     </script>
